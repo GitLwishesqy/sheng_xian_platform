@@ -1,0 +1,14 @@
+com\sx\user\entity\User.class
+com\sx\user\service\UserAddressService.class
+com\sx\user\mapper\UserAddressMapper.class
+com\sx\user\service\UserService.class
+com\sx\user\service\impl\UserServiceImpl.class
+com\sx\user\entity\PickupPoint.class
+com\sx\user\mapper\PickupPointMapper.class
+com\sx\user\service\impl\UserAddressServiceImpl.class
+com\sx\user\controller\AdminUserController.class
+com\sx\user\controller\UserController.class
+com\sx\user\controller\PickupPointController.class
+com\sx\user\controller\UserAddressController.class
+com\sx\user\entity\UserAddress.class
+com\sx\user\mapper\UserMapper.class

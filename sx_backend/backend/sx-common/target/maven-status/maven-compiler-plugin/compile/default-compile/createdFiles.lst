@@ -1,0 +1,11 @@
+com\sx\common\result\R.class
+com\sx\common\base\BaseEntity.class
+com\sx\common\enums\DeliveryTypeEnum.class
+com\sx\common\enums\OrderStatusEnum.class
+com\sx\common\constant\RedisConstant.class
+com\sx\common\exception\BusinessException.class
+com\sx\common\constant\SystemConstant.class
+com\sx\common\enums\PaymentStatusEnum.class
+com\sx\common\enums\CouponTypeEnum.class
+com\sx\common\result\PageResult.class
+com\sx\common\result\ResultCode.class

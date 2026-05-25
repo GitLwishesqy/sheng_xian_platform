@@ -1,0 +1,14 @@
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-user\src\main\java\com\sx\user\service\impl\UserAddressServiceImpl.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-user\src\main\java\com\sx\user\controller\AdminUserController.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-user\src\main\java\com\sx\user\entity\User.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-user\src\main\java\com\sx\user\service\impl\UserServiceImpl.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-user\src\main\java\com\sx\user\service\UserAddressService.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-user\src\main\java\com\sx\user\entity\PickupPoint.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-user\src\main\java\com\sx\user\controller\PickupPointController.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-user\src\main\java\com\sx\user\mapper\PickupPointMapper.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-user\src\main\java\com\sx\user\mapper\UserAddressMapper.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-user\src\main\java\com\sx\user\service\UserService.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-user\src\main\java\com\sx\user\entity\UserAddress.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-user\src\main\java\com\sx\user\controller\UserAddressController.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-user\src\main\java\com\sx\user\mapper\UserMapper.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-user\src\main\java\com\sx\user\controller\UserController.java

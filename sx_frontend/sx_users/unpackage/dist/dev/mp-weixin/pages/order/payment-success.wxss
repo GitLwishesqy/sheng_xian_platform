@@ -1,0 +1,50 @@
+/* 全局 SCSS 变量 */
+.page.data-v-56538179 {
+  background: #fff;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.result-box.data-v-56538179 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60rpx;
+}
+.result-icon.data-v-56538179 {
+  width: 160rpx;
+  height: 160rpx;
+  margin-bottom: 30rpx;
+}
+.result-emoji.data-v-56538179 {
+  font-size: 100rpx;
+  margin-bottom: 30rpx;
+}
+.result-title.data-v-56538179 {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 14rpx;
+}
+.result-subtitle.data-v-56538179 {
+  font-size: 26rpx;
+  color: #999;
+  margin-bottom: 30rpx;
+}
+.result-amount.data-v-56538179 {
+  font-size: 44rpx;
+  color: #ee0a24;
+  font-weight: bold;
+  margin-bottom: 50rpx;
+}
+.btn-home.data-v-56538179 {
+  width: 400rpx;
+  background: #07c160;
+  color: #fff;
+  border: none;
+  border-radius: 40rpx;
+  padding: 18rpx 0;
+  font-size: 30rpx;
+  text-align: center;
+}

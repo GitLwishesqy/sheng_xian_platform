@@ -1,0 +1,3 @@
+com\sx\payment\entity\OrderRefund.class
+com\sx\payment\entity\Payment.class
+com\sx\payment\mapper\PaymentMapper.class

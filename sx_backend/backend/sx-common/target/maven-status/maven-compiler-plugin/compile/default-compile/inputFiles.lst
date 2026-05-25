@@ -1,0 +1,11 @@
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-common\src\main\java\com\sx\common\enums\DeliveryTypeEnum.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-common\src\main\java\com\sx\common\result\R.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-common\src\main\java\com\sx\common\enums\OrderStatusEnum.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-common\src\main\java\com\sx\common\result\PageResult.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-common\src\main\java\com\sx\common\enums\PaymentStatusEnum.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-common\src\main\java\com\sx\common\exception\BusinessException.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-common\src\main\java\com\sx\common\constant\SystemConstant.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-common\src\main\java\com\sx\common\enums\CouponTypeEnum.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-common\src\main\java\com\sx\common\constant\RedisConstant.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-common\src\main\java\com\sx\common\base\BaseEntity.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-common\src\main\java\com\sx\common\result\ResultCode.java

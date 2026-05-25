@@ -1,0 +1,40 @@
+/* 全局 SCSS 变量 */
+.page.data-v-df3c8c7f {
+  background: #f5f5f5;
+  min-height: 100vh;
+  padding: 20rpx;
+}
+.form.data-v-df3c8c7f {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 0 24rpx;
+}
+.form-item.data-v-df3c8c7f {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+.label.data-v-df3c8c7f {
+  width: 160rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+.input.data-v-df3c8c7f {
+  flex: 1;
+  font-size: 28rpx;
+}
+.bottom-btn.data-v-df3c8c7f {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  padding: 20rpx 40rpx;
+}
+.bottom-btn .btn-primary.data-v-df3c8c7f {
+  width: 100%;
+  padding: 22rpx;
+  border-radius: 40rpx;
+  font-size: 30rpx;
+}

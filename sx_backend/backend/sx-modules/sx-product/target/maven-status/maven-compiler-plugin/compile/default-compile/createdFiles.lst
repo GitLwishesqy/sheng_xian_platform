@@ -1,0 +1,15 @@
+com\sx\product\service\impl\ProductServiceImpl.class
+com\sx\product\controller\AdminCategoryController.class
+com\sx\product\controller\ProductController.class
+com\sx\product\controller\AdminProductController.class
+com\sx\product\service\ProductService.class
+com\sx\product\entity\ProductSku.class
+com\sx\product\mapper\ProductMapper.class
+com\sx\product\controller\HomeController.class
+com\sx\product\entity\ProductReview.class
+com\sx\product\entity\Category.class
+com\sx\product\mapper\ProductSkuMapper.class
+com\sx\product\mapper\CategoryMapper.class
+com\sx\product\entity\Product.class
+com\sx\product\entity\ProductVO.class
+com\sx\product\controller\CategoryController.class

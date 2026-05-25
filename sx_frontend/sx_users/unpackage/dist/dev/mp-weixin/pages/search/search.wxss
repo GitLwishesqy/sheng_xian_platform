@@ -1,0 +1,121 @@
+/* 全局 SCSS 变量 */
+.page.data-v-c10c040c {
+  background: #fff;
+  min-height: 100vh;
+}
+.search-bar.data-v-c10c040c {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 20rpx;
+  background: #f5f5f5;
+}
+.search-box.data-v-c10c040c {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 40rpx;
+  padding: 12rpx 20rpx;
+}
+.search-icon.data-v-c10c040c {
+  font-size: 28rpx;
+  margin-right: 10rpx;
+}
+.search-input.data-v-c10c040c {
+  flex: 1;
+  font-size: 28rpx;
+}
+.clear-btn.data-v-c10c040c {
+  font-size: 28rpx;
+  color: #ccc;
+  padding: 0 10rpx;
+}
+.cancel-btn.data-v-c10c040c {
+  font-size: 28rpx;
+  color: #333;
+  margin-left: 16rpx;
+  white-space: nowrap;
+}
+.history.data-v-c10c040c {
+  padding: 20rpx;
+}
+.history-header.data-v-c10c040c {
+  margin-bottom: 16rpx;
+}
+.history-title.data-v-c10c040c {
+  font-size: 28rpx;
+  font-weight: bold;
+}
+.clear-history.data-v-c10c040c {
+  font-size: 24rpx;
+  color: #999;
+}
+.history-tags.data-v-c10c040c {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+.tag.data-v-c10c040c {
+  padding: 10rpx 20rpx;
+  background: #f5f5f5;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  color: #666;
+}
+.result-list.data-v-c10c040c {
+  padding: 16rpx;
+}
+.product-item.data-v-c10c040c {
+  display: flex;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+.item-img.data-v-c10c040c {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 12rpx;
+  flex-shrink: 0;
+}
+.item-info.data-v-c10c040c {
+  flex: 1;
+  margin-left: 20rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.item-name.data-v-c10c040c {
+  font-size: 28rpx;
+  color: #333;
+}
+.item-bottom.data-v-c10c040c {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.price.data-v-c10c040c {
+  color: #ee0a24;
+}
+.price-symbol.data-v-c10c040c {
+  font-size: 22rpx;
+  font-weight: bold;
+}
+.price-value.data-v-c10c040c {
+  font-size: 32rpx;
+  font-weight: bold;
+}
+.sales.data-v-c10c040c {
+  font-size: 22rpx;
+  color: #999;
+}
+.load-more.data-v-c10c040c {
+  text-align: center;
+  color: #999;
+  padding: 30rpx;
+  font-size: 24rpx;
+}
+.empty-tip.data-v-c10c040c {
+  text-align: center;
+  color: #999;
+  padding: 120rpx 0;
+  font-size: 28rpx;
+}

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.sx</groupId>
+        <artifactId>sheng-xian-platform</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>sx-job</artifactId>
+    <name>sx-job</name>
+    <description>定时任务模块：订单超时取消、自动确认收货、数据统计</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.sx</groupId>
+            <artifactId>sx-framework</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sx</groupId>
+            <artifactId>sx-order</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>

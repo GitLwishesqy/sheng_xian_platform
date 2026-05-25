@@ -1,0 +1,15 @@
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-product\src\main\java\com\sx\product\entity\ProductVO.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-product\src\main\java\com\sx\product\controller\AdminProductController.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-product\src\main\java\com\sx\product\controller\HomeController.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-product\src\main\java\com\sx\product\entity\ProductSku.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-product\src\main\java\com\sx\product\service\ProductService.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-product\src\main\java\com\sx\product\controller\AdminCategoryController.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-product\src\main\java\com\sx\product\entity\Product.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-product\src\main\java\com\sx\product\controller\ProductController.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-product\src\main\java\com\sx\product\mapper\ProductMapper.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-product\src\main\java\com\sx\product\mapper\CategoryMapper.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-product\src\main\java\com\sx\product\service\impl\ProductServiceImpl.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-product\src\main\java\com\sx\product\entity\ProductReview.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-product\src\main\java\com\sx\product\mapper\ProductSkuMapper.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-product\src\main\java\com\sx\product\entity\Category.java
+D:\Java_project\sheng_xian_platform\sx_backend\backend\sx-modules\sx-product\src\main\java\com\sx\product\controller\CategoryController.java

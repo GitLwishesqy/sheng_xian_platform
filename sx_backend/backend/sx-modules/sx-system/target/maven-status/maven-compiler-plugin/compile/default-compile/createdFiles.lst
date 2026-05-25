@@ -1,0 +1,9 @@
+com\sx\system\mapper\SysUserMapper.class
+com\sx\system\mapper\SysMenuMapper.class
+com\sx\system\controller\SysLoginController.class
+com\sx\system\entity\SysMenu.class
+com\sx\system\entity\SysRoleMenu.class
+com\sx\system\entity\SysUserRole.class
+com\sx\system\entity\SysRole.class
+com\sx\system\mapper\SysRoleMapper.class
+com\sx\system\entity\SysUser.class
