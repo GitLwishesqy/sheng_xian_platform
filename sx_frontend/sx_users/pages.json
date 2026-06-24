@@ -106,6 +106,12 @@
             }
         },
         {
+            "path": "pages/user/pickup",
+            "style": {
+                "navigationBarTitleText": "选择自提点"
+            }
+        },
+        {
             "path": "pages/user/coupon",
             "style": {
                 "navigationBarTitleText": "我的优惠券"

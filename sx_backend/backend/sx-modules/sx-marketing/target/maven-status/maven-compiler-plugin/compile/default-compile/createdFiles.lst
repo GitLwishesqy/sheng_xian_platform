@@ -1,8 +1,8 @@
+com\sx\marketing\mapper\UserCouponMapper.class
+com\sx\marketing\entity\Banner.class
 com\sx\marketing\controller\CouponController.class
 com\sx\marketing\controller\AdminBannerController.class
 com\sx\marketing\mapper\BannerMapper.class
-com\sx\marketing\mapper\UserCouponMapper.class
-com\sx\marketing\entity\Banner.class
 com\sx\marketing\controller\BannerController.class
 com\sx\marketing\mapper\CouponMapper.class
 com\sx\marketing\controller\AdminCouponController.class

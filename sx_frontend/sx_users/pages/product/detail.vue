@@ -140,9 +140,23 @@ export default {
                 uni.showToast({ title: '已加入购物车', icon: 'success' })
             })
         },
+        getSelectedSkuInfo() {
+            if (!this.selectedSkuId) return ''
+            const sku = this.skuList.find(s => s.id === this.selectedSkuId)
+            if (!sku) return ''
+            return (sku.specValue || '') + (sku.specName ? ' ' + sku.specName : '')
+        },
         buyNow() {
-            const data = { productId: this.product.id, quantity: 1 }
-            if (this.selectedSkuId) data.skuId = this.selectedSkuId
+            const price = this.selectedSkuId && this.skuPrice ? this.skuPrice : this.product.price
+            const data = {
+                productId: this.product.id,
+                skuId: this.selectedSkuId || undefined,
+                quantity: 1,
+                price: price,
+                productName: this.product.name,
+                productImage: this.product.coverImage || '',
+                specInfo: this.getSelectedSkuInfo()
+            }
             const items = [data]
             uni.navigateTo({ url: '/pages/order/confirm?items=' + encodeURIComponent(JSON.stringify(items)) })
         },

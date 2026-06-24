@@ -12,6 +12,7 @@ const _sfc_main = {
     return {
       orderItems: [],
       selectedAddress: null,
+      selectedPickupPoint: null,
       deliveryType: 1,
       deliveryFee: 5,
       totalAmount: 0,
@@ -58,6 +59,9 @@ const _sfc_main = {
     goAddress() {
       common_vendor.index.navigateTo({ url: "/pages/user/address?mode=select" });
     },
+    goPickup() {
+      common_vendor.index.navigateTo({ url: "/pages/user/pickup?mode=select" });
+    },
     goCoupon() {
       common_vendor.index.navigateTo({ url: "/pages/user/coupon?mode=select&amount=" + this.totalAmount });
     },
@@ -67,23 +71,27 @@ const _sfc_main = {
       this.calcAmount();
     },
     async loadItemImages() {
-      for (const item of this.orderItems) {
-        if (!item.productImage && item.productId) {
-          try {
-            const res = await api_request.http.get("/api/v1/product/" + item.productId, {}, true);
-            if (res.code === 200 && res.data) {
-              item.productImage = res.data.coverImage || "";
-            }
-          } catch (e) {
+      const promises = this.orderItems.filter((item) => !item.productImage && item.productId).map(
+        (item) => api_request.http.get("/api/v1/product/" + item.productId, {}, true).then((res) => {
+          if (res.code === 200 && res.data) {
+            item.productImage = res.data.coverImage || "";
           }
-        }
+        }).catch(() => {
+        })
+      );
+      if (promises.length > 0) {
+        await Promise.all(promises);
       }
     },
     async submitOrder() {
       if (this.submitting)
         return;
-      if (!this.selectedAddress && this.deliveryType === 1) {
+      if (this.deliveryType === 1 && !this.selectedAddress) {
         common_vendor.index.showToast({ title: "请选择收货地址", icon: "none" });
+        return;
+      }
+      if (this.deliveryType === 2 && !this.selectedPickupPoint) {
+        common_vendor.index.showToast({ title: "请选择自提点", icon: "none" });
         return;
       }
       this.submitting = true;
@@ -98,6 +106,8 @@ const _sfc_main = {
       };
       if (this.deliveryType === 1 && this.selectedAddress)
         data.addressId = this.selectedAddress.id;
+      if (this.deliveryType === 2 && this.selectedPickupPoint)
+        data.pickupPointId = this.selectedPickupPoint.id;
       if (this.selectedCoupon)
         data.couponId = this.selectedCoupon.id;
       try {
@@ -118,27 +128,51 @@ const _sfc_main = {
 };
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return common_vendor.e({
-    a: $data.selectedAddress
+    a: $data.deliveryType === 1
+  }, $data.deliveryType === 1 ? common_vendor.e({
+    b: $data.selectedAddress
   }, $data.selectedAddress ? common_vendor.e({
-    b: common_vendor.t($data.selectedAddress.receiverName),
-    c: common_vendor.t($data.selectedAddress.receiverPhone),
-    d: $data.selectedAddress.isDefault
+    c: common_vendor.t($data.selectedAddress.receiverName),
+    d: common_vendor.t($data.selectedAddress.receiverPhone),
+    e: $data.selectedAddress.isDefault
   }, $data.selectedAddress.isDefault ? {} : {}, {
-    e: common_vendor.t($data.selectedAddress.province),
-    f: common_vendor.t($data.selectedAddress.city),
-    g: common_vendor.t($data.selectedAddress.district),
-    h: common_vendor.t($data.selectedAddress.detailAddress)
+    f: common_vendor.t($data.selectedAddress.province),
+    g: common_vendor.t($data.selectedAddress.city),
+    h: common_vendor.t($data.selectedAddress.district),
+    i: common_vendor.t($data.selectedAddress.detailAddress)
   }) : {
-    i: $setup.ICON.location
+    j: $setup.ICON.location
   }, {
-    j: common_vendor.o((...args) => $options.goAddress && $options.goAddress(...args)),
-    k: $setup.ICON.homeDelivery,
-    l: common_vendor.n($data.deliveryType === 1 ? "active" : ""),
-    m: common_vendor.o(($event) => $options.setDelivery(1)),
-    n: $setup.ICON.selfPickup,
-    o: common_vendor.n($data.deliveryType === 2 ? "active" : ""),
-    p: common_vendor.o(($event) => $options.setDelivery(2)),
-    q: common_vendor.f($data.orderItems, (item, k0, i0) => {
+    k: common_vendor.o((...args) => $options.goAddress && $options.goAddress(...args))
+  }) : {}, {
+    l: $data.deliveryType === 2
+  }, $data.deliveryType === 2 ? common_vendor.e({
+    m: $data.selectedPickupPoint
+  }, $data.selectedPickupPoint ? common_vendor.e({
+    n: $setup.ICON.pickup,
+    o: common_vendor.t($data.selectedPickupPoint.name),
+    p: common_vendor.t($data.selectedPickupPoint.address),
+    q: $data.selectedPickupPoint.phone || $data.selectedPickupPoint.businessHours
+  }, $data.selectedPickupPoint.phone || $data.selectedPickupPoint.businessHours ? common_vendor.e({
+    r: $data.selectedPickupPoint.phone
+  }, $data.selectedPickupPoint.phone ? {
+    s: common_vendor.t($data.selectedPickupPoint.phone)
+  } : {}, {
+    t: $data.selectedPickupPoint.businessHours
+  }, $data.selectedPickupPoint.businessHours ? {
+    v: common_vendor.t($data.selectedPickupPoint.businessHours)
+  } : {}) : {}) : {
+    w: $setup.ICON.pickup
+  }, {
+    x: common_vendor.o((...args) => $options.goPickup && $options.goPickup(...args))
+  }) : {}, {
+    y: $setup.ICON.homeDelivery,
+    z: common_vendor.n($data.deliveryType === 1 ? "active" : ""),
+    A: common_vendor.o(($event) => $options.setDelivery(1)),
+    B: $setup.ICON.selfPickup,
+    C: common_vendor.n($data.deliveryType === 2 ? "active" : ""),
+    D: common_vendor.o(($event) => $options.setDelivery(2)),
+    E: common_vendor.f($data.orderItems, (item, k0, i0) => {
       return common_vendor.e({
         a: item.productImage || $data.defaultImg,
         b: common_vendor.t(item.productName),
@@ -151,19 +185,19 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
         g: item.productId
       });
     }),
-    r: common_vendor.t($data.selectedCoupon ? "¥" + $data.selectedCoupon.discountValue : "选择优惠券"),
-    s: common_vendor.o((...args) => $options.goCoupon && $options.goCoupon(...args)),
-    t: common_vendor.t($data.totalAmount.toFixed(2)),
-    v: common_vendor.t($data.deliveryFee.toFixed(2)),
-    w: $data.discountAmount > 0
+    F: common_vendor.t($data.selectedCoupon ? "¥" + $data.selectedCoupon.discountValue : "选择优惠券"),
+    G: common_vendor.o((...args) => $options.goCoupon && $options.goCoupon(...args)),
+    H: common_vendor.t($data.totalAmount.toFixed(2)),
+    I: common_vendor.t($data.deliveryFee.toFixed(2)),
+    J: $data.discountAmount > 0
   }, $data.discountAmount > 0 ? {
-    x: common_vendor.t($data.discountAmount.toFixed(2))
+    K: common_vendor.t($data.discountAmount.toFixed(2))
   } : {}, {
-    y: common_vendor.t($data.payAmount.toFixed(2)),
-    z: common_vendor.t($data.submitting ? "提交中..." : "提交订单"),
-    A: $data.submitting,
-    B: $data.submitting,
-    C: common_vendor.o((...args) => $options.submitOrder && $options.submitOrder(...args))
+    L: common_vendor.t($data.payAmount.toFixed(2)),
+    M: common_vendor.t($data.submitting ? "提交中..." : "提交订单"),
+    N: $data.submitting,
+    O: $data.submitting,
+    P: common_vendor.o((...args) => $options.submitOrder && $options.submitOrder(...args))
   });
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-324e7894"]]);

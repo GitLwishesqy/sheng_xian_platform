@@ -54,6 +54,18 @@
 .no-addr .addr-arrow.data-v-324e7894 {
   margin-left: auto;
 }
+.pickup-icon-sm.data-v-324e7894 {
+  width: 32rpx;
+  height: 32rpx;
+  margin-right: 6rpx;
+}
+.pickup-extra.data-v-324e7894 {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  color: #999;
+}
 .delivery-options.data-v-324e7894 {
   display: flex;
   gap: 20rpx;

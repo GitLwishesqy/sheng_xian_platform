@@ -16,6 +16,7 @@
     "pages/order/payment",
     "pages/order/payment-success",
     "pages/order/payment-fail",
+    "pages/user/pickup",
     "pages/user/coupon"
   ],
   "window": {

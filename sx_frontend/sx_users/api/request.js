@@ -20,7 +20,7 @@ function request(options) {
             method: options.method || 'GET',
             data: options.data || {},
             header: header,
-            timeout: 15000,
+            timeout: 30000,
             success: (res) => {
                 const { statusCode, data } = res
                 if (statusCode === 401 || statusCode === 403) {

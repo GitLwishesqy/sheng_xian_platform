@@ -23,6 +23,7 @@ const iconMap = {
   '烘焙': '/static/images/milk.png',
   '零食': '/static/images/snack.png',
   '坚果': '/static/images/snack.png',
+  
 }
 
 const defaultIcon = '/static/images/fruit.png'

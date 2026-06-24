@@ -16,7 +16,7 @@ function request(options) {
       method: options.method || "GET",
       data: options.data || {},
       header,
-      timeout: 15e3,
+      timeout: 3e4,
       success: (res) => {
         const { statusCode, data } = res;
         if (statusCode === 401 || statusCode === 403) {

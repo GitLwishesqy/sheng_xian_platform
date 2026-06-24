@@ -18,6 +18,7 @@ if (!Math) {
   "./pages/order/payment.js";
   "./pages/order/payment-success.js";
   "./pages/order/payment-fail.js";
+  "./pages/user/pickup.js";
   "./pages/user/coupon.js";
 }
 const _sfc_main = {

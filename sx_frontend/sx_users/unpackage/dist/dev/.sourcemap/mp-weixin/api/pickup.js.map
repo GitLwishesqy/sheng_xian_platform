@@ -1,0 +1,1 @@
+{"version":3,"file":"pickup.js","sources":["api/pickup.js"],"sourcesContent":["import http from './request.js'\n\nexport default {\n    // 自提点列表\n    getPickupList() {\n        return http.get('/api/v1/pickup-point/list')\n    }\n}\n"],"names":["http"],"mappings":";;AAEA,MAAe,YAAA;AAAA;AAAA,EAEX,gBAAgB;AACZ,WAAOA,YAAI,KAAC,IAAI,2BAA2B;AAAA,EAC9C;AACL;;"}

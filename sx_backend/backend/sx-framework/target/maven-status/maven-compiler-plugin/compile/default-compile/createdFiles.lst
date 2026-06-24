@@ -1,10 +1,10 @@
-com\sx\framework\config\WebMvcConfig.class
-com\sx\framework\config\GlobalExceptionHandler.class
 com\sx\framework\config\MybatisPlusConfig$1.class
 com\sx\framework\config\MybatisPlusConfig.class
+com\sx\framework\config\SecurityConfig.class
+com\sx\framework\security\JwtTokenProvider.class
+com\sx\framework\config\WebMvcConfig.class
+com\sx\framework\config\GlobalExceptionHandler.class
 com\sx\framework\config\Knife4jConfig.class
 com\sx\framework\security\UserContext.class
-com\sx\framework\config\SecurityConfig.class
 com\sx\framework\security\JwtAuthenticationFilter.class
-com\sx\framework\security\JwtTokenProvider.class
 com\sx\framework\config\RedisConfig.class

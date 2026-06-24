@@ -25,6 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements OrderService {
@@ -55,31 +57,62 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Override
     @Transactional
     public Order createOrder(Long userId, CreateOrderDTO dto) {
-        // 库存校验
+        // === 1. 配送方式校验 ===
+        int deliveryType = dto.getDeliveryType() != null ? dto.getDeliveryType() : 1;
+        if (deliveryType == 1 && dto.getAddressId() == null) {
+            throw new BusinessException(ResultCode.BAD_REQUEST.getCode(), "配送到家必须选择收货地址");
+        }
+        if (deliveryType == 2 && dto.getPickupPointId() == null) {
+            throw new BusinessException(ResultCode.BAD_REQUEST.getCode(), "到店自提必须选择自提点");
+        }
+
+        // === 2. 收集所有 productId 和 skuId，批量查询（消除 N+1 问题） ===
+        List<Long> productIds = dto.getItems().stream()
+                .map(CreateOrderDTO.OrderItemDTO::getProductId)
+                .distinct().collect(Collectors.toList());
+        List<Long> skuIds = dto.getItems().stream()
+                .map(CreateOrderDTO.OrderItemDTO::getSkuId)
+                .filter(Objects::nonNull)
+                .distinct().collect(Collectors.toList());
+
+        Map<Long, Product> productMap = productIds.isEmpty() ? Collections.emptyMap() :
+                productMapper.selectBatchIds(productIds).stream()
+                        .collect(Collectors.toMap(Product::getId, p -> p));
+        Map<Long, ProductSku> skuMap = skuIds.isEmpty() ? Collections.emptyMap() :
+                skuMapper.selectBatchIds(skuIds).stream()
+                        .collect(Collectors.toMap(ProductSku::getId, s -> s));
+
+        // === 3. 库存校验 + 金额计算（一次遍历，使用缓存的 Map） ===
+        BigDecimal totalAmount = BigDecimal.ZERO;
         for (CreateOrderDTO.OrderItemDTO item : dto.getItems()) {
-            if (item.getSkuId() != null) {
-                ProductSku sku = skuMapper.selectById(item.getSkuId());
-                if (sku == null) {
-                    throw new BusinessException(ResultCode.PRODUCT_NOT_EXIST);
-                }
-                if (sku.getStock() < item.getQuantity()) {
-                    throw new BusinessException(ResultCode.STOCK_INSUFFICIENT);
-                }
-            }
-            Product p = productMapper.selectById(item.getProductId());
+            Product p = productMap.get(item.getProductId());
             if (p == null) {
                 throw new BusinessException(ResultCode.PRODUCT_NOT_EXIST);
             }
-            if (p.getStock() < item.getQuantity()) {
+            ProductSku sku = null;
+            if (item.getSkuId() != null) {
+                sku = skuMap.get(item.getSkuId());
+                if (sku == null) {
+                    throw new BusinessException(ResultCode.PRODUCT_NOT_EXIST);
+                }
+            }
+
+            // 库存校验
+            int checkStock = sku != null ? sku.getStock() : p.getStock();
+            if (checkStock < item.getQuantity()) {
                 throw new BusinessException(ResultCode.STOCK_INSUFFICIENT);
             }
+
+            // 累加金额
+            BigDecimal price = sku != null ? sku.getPrice() : p.getPrice();
+            totalAmount = totalAmount.add(price.multiply(BigDecimal.valueOf(item.getQuantity())));
         }
 
-        // 生成订单号
+        // === 4. 生成订单号 ===
         String orderNo = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
                 + String.format("%06d", (int) (Math.random() * 1000000));
 
-        // 地址快照
+        // === 5. 地址快照 ===
         String addressSnapshot = null;
         if (dto.getAddressId() != null) {
             UserAddress addr = userAddressMapper.selectById(dto.getAddressId());
@@ -90,32 +123,22 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             }
         }
 
-        // 计算金额
-        BigDecimal totalAmount = BigDecimal.ZERO;
-        for (CreateOrderDTO.OrderItemDTO item : dto.getItems()) {
-            BigDecimal price;
-            if (item.getSkuId() != null) {
-                ProductSku sku = skuMapper.selectById(item.getSkuId());
-                price = sku.getPrice();
-            } else {
-                Product p = productMapper.selectById(item.getProductId());
-                price = p.getPrice();
-            }
-            totalAmount = totalAmount.add(price.multiply(BigDecimal.valueOf(item.getQuantity())));
-        }
+        // === 6. 动态配送费（配送到家=5元，到店自提=0元） ===
+        BigDecimal deliveryFee = deliveryType == 1 ? BigDecimal.valueOf(5) : BigDecimal.ZERO;
+        BigDecimal discountAmount = BigDecimal.ZERO; // 后续优惠券功能使用
 
-        // 保存订单
+        // === 7. 保存订单 ===
         Order order = new Order();
         order.setOrderNo(orderNo);
         order.setUserId(userId);
-        order.setDeliveryType(dto.getDeliveryType() != null ? dto.getDeliveryType() : 1);
+        order.setDeliveryType(deliveryType);
         order.setAddressId(dto.getAddressId());
         order.setPickupPointId(dto.getPickupPointId());
         order.setAddressSnapshot(addressSnapshot);
         order.setTotalAmount(totalAmount);
-        order.setDeliveryFee(BigDecimal.valueOf(5));
-        order.setDiscountAmount(BigDecimal.ZERO);
-        order.setPayAmount(totalAmount.add(order.getDeliveryFee()));
+        order.setDeliveryFee(deliveryFee);
+        order.setDiscountAmount(discountAmount);
+        order.setPayAmount(totalAmount.add(deliveryFee).subtract(discountAmount));
         order.setOrderStatus(OrderStatusEnum.PENDING_PAY.getCode());
         order.setPaymentStatus(0);
         order.setRemark(dto.getRemark());
@@ -124,9 +147,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         // 记录状态日志
         saveStatusLog(order.getId(), null, OrderStatusEnum.PENDING_PAY.getCode(), "用户", "提交订单");
 
-        // 保存订单明细并扣减库存
+        // === 8. 保存订单明细并扣减库存（复用缓存的 Map） ===
         for (CreateOrderDTO.OrderItemDTO item : dto.getItems()) {
-            Product p = productMapper.selectById(item.getProductId());
+            Product p = productMap.get(item.getProductId());
+            ProductSku sku = item.getSkuId() != null ? skuMap.get(item.getSkuId()) : null;
 
             OrderItem oi = new OrderItem();
             oi.setOrderId(order.getId());
@@ -134,10 +158,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             oi.setSkuId(item.getSkuId());
             oi.setProductName(p.getName());
             oi.setProductImage(p.getCoverImage());
-            oi.setPrice(p.getPrice());
+            oi.setQuantity(item.getQuantity());
 
-            if (item.getSkuId() != null) {
-                ProductSku sku = skuMapper.selectById(item.getSkuId());
+            if (sku != null) {
                 oi.setPrice(sku.getPrice());
                 oi.setSpecInfo((sku.getSpecName() != null ? sku.getSpecName() : "") + " " +
                                (sku.getSpecValue() != null ? sku.getSpecValue() : ""));
@@ -146,9 +169,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
                 if (rows == 0) {
                     throw new BusinessException(ResultCode.STOCK_INSUFFICIENT);
                 }
+            } else {
+                oi.setPrice(p.getPrice());
             }
 
-            oi.setQuantity(item.getQuantity());
             oi.setTotalAmount(oi.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
             orderItemMapper.insert(oi);
 

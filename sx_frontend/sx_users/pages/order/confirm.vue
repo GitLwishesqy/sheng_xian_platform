@@ -1,7 +1,7 @@
 <template>
 <view class="page">
-    <!-- 收货地址 -->
-    <view class="card" @click="goAddress">
+    <!-- 收货地址（配送到家） -->
+    <view class="card" @click="goAddress" v-if="deliveryType === 1">
         <view v-if="selectedAddress" class="address-info">
             <view class="addr-top">
                 <text class="addr-name">{{ selectedAddress.receiverName }}</text>
@@ -13,6 +13,26 @@
         <view v-else class="no-addr">
             <image :src="ICON.location" class="addr-icon-img" mode="aspectFit"></image>
             <text>请选择收货地址</text>
+            <text class="addr-arrow">→</text>
+        </view>
+    </view>
+
+    <!-- 自提点（到店自提） -->
+    <view class="card" @click="goPickup" v-if="deliveryType === 2">
+        <view v-if="selectedPickupPoint" class="address-info">
+            <view class="addr-top">
+                <image :src="ICON.pickup" class="pickup-icon-sm" mode="aspectFit"></image>
+                <text class="addr-name">{{ selectedPickupPoint.name }}</text>
+            </view>
+            <text class="addr-detail">{{ selectedPickupPoint.address }}</text>
+            <view class="pickup-extra" v-if="selectedPickupPoint.phone || selectedPickupPoint.businessHours">
+                <text v-if="selectedPickupPoint.phone">📞 {{ selectedPickupPoint.phone }}</text>
+                <text v-if="selectedPickupPoint.businessHours">🕐 {{ selectedPickupPoint.businessHours }}</text>
+            </view>
+        </view>
+        <view v-else class="no-addr">
+            <image :src="ICON.pickup" class="addr-icon-img" mode="aspectFit"></image>
+            <text>请选择自提点</text>
             <text class="addr-arrow">→</text>
         </view>
     </view>
@@ -90,6 +110,7 @@ export default {
         return {
             orderItems: [],
             selectedAddress: null,
+            selectedPickupPoint: null,
             deliveryType: 1,
             deliveryFee: 5,
             totalAmount: 0,
@@ -128,6 +149,7 @@ export default {
             this.payAmount = this.totalAmount + this.deliveryFee - this.discountAmount
         },
         goAddress() { uni.navigateTo({ url: '/pages/user/address?mode=select' }) },
+        goPickup() { uni.navigateTo({ url: '/pages/user/pickup?mode=select' }) },
         goCoupon() { uni.navigateTo({ url: '/pages/user/coupon?mode=select&amount=' + this.totalAmount }) },
         setDelivery(type) {
             this.deliveryType = type
@@ -135,21 +157,28 @@ export default {
             this.calcAmount()
         },
         async loadItemImages() {
-            for (const item of this.orderItems) {
-                if (!item.productImage && item.productId) {
-                    try {
-                        const res = await http.get('/api/v1/product/' + item.productId, {}, true)
+            // 并行加载缺失的商品图片，而非逐个串行请求
+            const promises = this.orderItems
+                .filter(item => !item.productImage && item.productId)
+                .map(item => http.get('/api/v1/product/' + item.productId, {}, true)
+                    .then(res => {
                         if (res.code === 200 && res.data) {
                             item.productImage = res.data.coverImage || ''
                         }
-                    } catch (e) { /* ignore */ }
-                }
+                    })
+                    .catch(() => {})
+                )
+            if (promises.length > 0) {
+                await Promise.all(promises)
             }
         },
         async submitOrder() {
             if (this.submitting) return
-            if (!this.selectedAddress && this.deliveryType === 1) {
+            if (this.deliveryType === 1 && !this.selectedAddress) {
                 uni.showToast({ title: '请选择收货地址', icon: 'none' }); return
+            }
+            if (this.deliveryType === 2 && !this.selectedPickupPoint) {
+                uni.showToast({ title: '请选择自提点', icon: 'none' }); return
             }
             this.submitting = true
             const data = {
@@ -160,6 +189,7 @@ export default {
                 remark: this.remark
             }
             if (this.deliveryType === 1 && this.selectedAddress) data.addressId = this.selectedAddress.id
+            if (this.deliveryType === 2 && this.selectedPickupPoint) data.pickupPointId = this.selectedPickupPoint.id
             if (this.selectedCoupon) data.couponId = this.selectedCoupon.id
 
             try {
@@ -192,6 +222,8 @@ export default {
     .addr-detail { font-size: 24rpx; color: #999; display: block; margin-top: 8rpx; }
 }
 .no-addr { display: flex; align-items: center; font-size: 28rpx; color: #999; .addr-icon-img { width: 32rpx; height: 32rpx; margin-right: 12rpx; } .addr-arrow { margin-left: auto; } }
+.pickup-icon-sm { width: 32rpx; height: 32rpx; margin-right: 6rpx; }
+.pickup-extra { display: flex; gap: 16rpx; margin-top: 6rpx; font-size: 22rpx; color: #999; }
 .delivery-options { display: flex; gap: 20rpx; }
 .delivery-item { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8rpx; padding: 20rpx; background: #f5f5f5; border-radius: 12rpx; font-size: 26rpx; }
 .delivery-icon { width: 32rpx; height: 32rpx; }

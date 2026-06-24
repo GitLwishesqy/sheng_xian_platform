@@ -104,27 +104,28 @@ public class CartController {
 
     @Operation(summary = "修改数量")
     @PutMapping("/{id}")
-    public R<Void> updateQuantity(@PathVariable Long id, @RequestParam int quantity) {
+    public R<Void> updateQuantity(@PathVariable Long id, @RequestBody Map<String, Integer> body) {
         CartItem item = new CartItem();
         item.setId(id);
-        item.setQuantity(quantity);
+        item.setQuantity(body.get("quantity"));
         cartService.updateById(item);
         return R.ok();
     }
 
     @Operation(summary = "选中/取消")
     @PutMapping("/{id}/select")
-    public R<Void> toggleSelect(@PathVariable Long id, @RequestParam int selected) {
+    public R<Void> toggleSelect(@PathVariable Long id, @RequestBody Map<String, Integer> body) {
         CartItem item = new CartItem();
         item.setId(id);
-        item.setSelected(selected);
+        item.setSelected(body.get("selected"));
         cartService.updateById(item);
         return R.ok();
     }
 
     @Operation(summary = "全选/取消全选")
     @PutMapping("/select-all")
-    public R<Void> selectAll(@RequestParam int selected) {
+    public R<Void> selectAll(@RequestBody Map<String, Integer> body) {
+        int selected = body.get("selected");
         CartItem update = new CartItem();
         update.setSelected(selected);
         cartService.update(update, new LambdaQueryWrapper<CartItem>().eq(CartItem::getUserId, UserContext.getUserId()));

@@ -1,7 +1,7 @@
 "use strict";
 const ENV = {
-  // 开发环境 — 改为你的本机 IP
-  dev: "http://10.157.148.39:8090",
+  // 开发环境 
+  dev: "http://192.168.10.178:8090",
   // 生产环境
   prod: "https://api.your-domain.com"
 };

@@ -11,7 +11,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.stereotype.Component;
@@ -29,11 +29,11 @@ public class RateLimitAspect {
 
     private static final Logger log = LoggerFactory.getLogger(RateLimitAspect.class);
 
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final StringRedisTemplate stringRedisTemplate;
     private DefaultRedisScript<Long> redisScript;
 
-    public RateLimitAspect(RedisTemplate<String, Object> redisTemplate) {
-        this.redisTemplate = redisTemplate;
+    public RateLimitAspect(StringRedisTemplate stringRedisTemplate) {
+        this.stringRedisTemplate = stringRedisTemplate;
     }
 
     @PostConstruct
@@ -50,7 +50,7 @@ public class RateLimitAspect {
         int maxRequests = rateLimit.maxRequests();
         long now = System.currentTimeMillis();
 
-        Long result = redisTemplate.execute(
+        Long result = stringRedisTemplate.execute(
                 redisScript,
                 Collections.singletonList(key),
                 String.valueOf(window),

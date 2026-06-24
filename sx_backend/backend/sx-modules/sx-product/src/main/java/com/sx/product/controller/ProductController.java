@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sx.common.result.PageResult;
 import com.sx.common.result.R;
 import com.sx.product.entity.Product;
+import com.sx.product.entity.ProductReview;
 import com.sx.product.entity.ProductSku;
 import com.sx.product.entity.ProductVO;
+import com.sx.product.mapper.ProductReviewMapper;
 import com.sx.product.mapper.ProductSkuMapper;
 import com.sx.product.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,10 +24,13 @@ public class ProductController {
 
     private final ProductService productService;
     private final ProductSkuMapper skuMapper;
+    private final ProductReviewMapper reviewMapper;
 
-    public ProductController(ProductService productService, ProductSkuMapper skuMapper) {
+    public ProductController(ProductService productService, ProductSkuMapper skuMapper,
+                             ProductReviewMapper reviewMapper) {
         this.productService = productService;
         this.skuMapper = skuMapper;
+        this.reviewMapper = reviewMapper;
     }
 
     @Operation(summary = "商品列表")
@@ -68,5 +73,19 @@ public class ProductController {
         List<ProductSku> skus = skuMapper.selectList(
                 new LambdaQueryWrapper<ProductSku>().eq(ProductSku::getProductId, id));
         return R.ok(ProductVO.from(product, skus));
+    }
+
+    @Operation(summary = "商品评价列表")
+    @GetMapping("/{id}/reviews")
+    public R<PageResult<ProductReview>> reviews(
+            @PathVariable Long id,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int pageSize) {
+        Page<ProductReview> result = reviewMapper.selectPage(
+                new Page<>(page, pageSize),
+                new LambdaQueryWrapper<ProductReview>()
+                        .eq(ProductReview::getProductId, id)
+                        .orderByDesc(ProductReview::getCreateTime));
+        return R.ok(PageResult.of(result));
     }
 }
